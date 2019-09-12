@@ -1,3 +1,4 @@
+const process = require('process');
 const Tesseract = require('tesseract.js');
 const Jimp = require('jimp');
 
