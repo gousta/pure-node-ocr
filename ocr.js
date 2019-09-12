@@ -1,27 +1,24 @@
 const process = require('process');
 const Tesseract = require('tesseract.js');
-const Jimp = require('jimp');
 
-Jimp.read('download.gif')
-  .then((img) => {
-    return img
-      .background(0xFFFFFFFF)
-      .contrast(-0.5)
-      .quality(100) // set JPEG quality
-      .write('download.jpg'); // save
+const filePath = process.argv[2] || null;
+
+if (!filePath) {
+  console.error('Filepath is missing');
+  process.exit(1);
+}
+
+function exitOK(data) {
+  console.log(`<${data}>`);
+  process.exit(0);
+}
+
+Tesseract.recognize(filePath)
+  .then(({ text }) => {
+    const cleanedResult = text.replace(/\D/g, '');
+    exitOK(cleanedResult)
   })
-  .then(() => {
-    Tesseract.recognize('./download.jpg')
-      .then(({ text }) => {
-        const cleanedResult = text.replace(/\D/g, '');
-        console.log('cleanedResult', `<${cleanedResult}>`);
-        process.exit(0);
-      })
-      .finally(resultOrError => console.log(resultOrError))
-      .catch(err => console.error('test1', err));
-  })
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
+  .finally((resultOrError) => console.log(resultOrError))
+  .catch(err => console.error('test1', err));
+
 
