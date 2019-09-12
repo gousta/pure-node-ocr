@@ -33,6 +33,6 @@ function clean() {
 
 // Execute
 Jimp.read(`${filePathWithoutExtension}.gif`)
-  .then((img) => img.background(0xFFFFFFFF).contrast(-1).quality(100).write(`${filePathWithoutExtension}.jpg`))
+  .then((img) => img.background(0xFFFFFFFF).contrast(-0.5).scale(1.5).quality(100).write(`${filePathWithoutExtension}.jpg`))
   .then(() => Tesseract.recognize(`${filePathWithoutExtension}.jpg`).then(success).catch(failure))
   .catch(failure);
