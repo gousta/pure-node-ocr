@@ -1,32 +1,35 @@
 const process = require('process');
+const fs = require('fs');
 const Tesseract = require('tesseract.js');
 const Jimp = require('jimp');
-
-function success(res) {
-  if (res && res.text) {
-    console.log(`|||${res.text.replace(/\D/g, '')}|||`);
-  }
-
-  process.exit(0);
-}
-
-function failure(err) {
-  console.error(err);
-  process.exit(1);
-}
-
-function getFilePathWithoutExtension(filePath) {
-  const splitting = filePath.split('.');
-  return splitting && splitting[0] ? splitting[0] : null;
-}
 
 // Provision the path
 const filePathArgument = process.argv[2] || null;
 if (!filePathArgument) failure('Path is missing');
 
 // Clean the path
-const filePathWithoutExtension = getFilePathWithoutExtension(filePathArgument);
+const filePathArgumentSplit = filePathArgument.split('.');
+const filePathWithoutExtension = filePathArgumentSplit && filePathArgumentSplit[0] ? filePathArgumentSplit[0] : null;
 if (!filePathWithoutExtension) failure('Failed to identify path to file without extension');
+
+function success(res) {
+  if (res && res.text) {
+    console.log(`|||${res.text.replace(/\D/g, '')}|||`);
+  }
+  clean();
+  process.exit(0);
+}
+
+function failure(err) {
+  console.error(err);
+  clean();
+  process.exit(1);
+}
+
+function clean() {
+  fs.unlinkSync(`${filePathWithoutExtension}.gif`)
+  fs.unlinkSync(`${filePathWithoutExtension}.jpg`)
+}
 
 // Execute
 Jimp.read(`${filePathWithoutExtension}.gif`)
