@@ -4,7 +4,7 @@ const Jimp = require('jimp');
 
 function success(res) {
   if (res && res.text) {
-    console.log(`<${res.text.replace(/\D/g, '')}>`);
+    console.log(`|||${res.text.replace(/\D/g, '')}|||`);
   }
 
   process.exit(0);
