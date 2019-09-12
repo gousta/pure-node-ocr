@@ -2,7 +2,6 @@
   "dependencies": {
     "eslint": "^6.3.0",
     "jimp": "^0.8.1",
-    "tesseract.js": "^1.0.19",
-    "uuid": "^3.3.3"
+    "tesseract.js": "^1.0.19"
   }
 }
